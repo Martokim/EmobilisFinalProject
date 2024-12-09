@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ plant.name }} - Lavender Nursery{% endblock %}
+
+{% block content %}
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="row g-5">
+            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
+                {% if plant.image %}
+                    <img class="img-fluid rounded" src="{{ plant.image.url }}" alt="{{ plant.name }}">
+                {% else %}
+                    <img class="img-fluid rounded" src="{% static 'img/placeholder-plant.jpg' %}" alt="{{ plant.name }}">
+                {% endif %}
+            </div>
+            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
+                <h1 class="display-5 mb-4">{{ plant.name }}</h1>
+                <p class="mb-4"><em>{{ plant.scientific_name }}</em></p>
+                <h3 class="mb-3">Description</h3>
+                <p class="mb-4">{{ plant.description }}</p>
+                <h3 class="mb-3">Care Instructions</h3>
+                <ul class="list-unstyled">
+                    {% for instruction in plant.care_instructions_list %}
+                        <li>{{ instruction }}</li>
+                    {% endfor %}
+                </ul>
+                <div class="d-flex align-items-center">
+                    <h2 class="mb-0 me-3">Ksh {{ plant.price }}</h2>
+                    {% if plant.stock > 0 %}
+                        <span class="badge bg-success">In Stock</span>
+                    {% else %}
+                        <span class="badge bg-danger">Out of Stock</span>
+                    {% endif %}
+                </div>
+                {% comment %} <a href="{% url 'request_plant' plant.id %}" class="btn btn-primary mt-3">Request This Plant</a> {% endcomment %}
+                 <a href="{% url 'add_to_cart' plant.id %}" class="btn btn-primary mt-3">add to cart</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

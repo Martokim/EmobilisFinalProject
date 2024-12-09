@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Your Cart</h2>
+    {% if cart_items %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Plant</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                <tr>
+                    <td>{{ item.plant.name }}</td>
+                    <td>
+                        <form method="post" action="{% url 'update_cart' item.id %}">
+                            {% csrf_token %}
+                            <input type="number" name="quantity" value="{{ item.quantity }}" min="1" class="form-control" style="width: 60px;">
+                            <button type="submit" class="btn btn-sm btn-primary">Update</button>
+                        </form>
+                    </td>
+                    <td>Ksh {{ item.plant.price }}</td>
+                    <td>Ksh {{ item.total_price }}</td>
+                    <td>
+                        <a href="{% url 'remove_from_cart' item.id %}" class="btn btn-sm btn-danger">Remove</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3"><strong>Total:</strong></td>
+                    <td><strong>KSH {{ total }}</strong></td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+        <a href="{% url 'checkout' %}" class="btn btn-success">Proceed to Checkout</a>
+    {% else %}
+        <p>Your cart is empty.</p>
+    {% endif %}
+</div>
+{% endblock %}
+

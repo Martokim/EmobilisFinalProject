@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Update</title>
+</head>
+<body>
+    <h1>Update on your {{ request_type }} request</h1>
+    <p>Dear {{ user.username }},</p>
+    <p>Your {{ request_type }} request has been updated to: <strong>{{ status }}</strong></p>
+    {% if response %}
+    <p>Admin response: {{ response }}</p>
+    {% endif %}
+    <p>If you have any questions, please don't hesitate to contact us.</p>
+    <p>Thank you for using our service!</p>
+    <p>Best regards,<br>Lavender Nursery Team</p>
+</body>
+</html>
+

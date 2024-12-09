@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Request Quote for {{ service.name }}{% endblock %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="card shadow-sm p-4" style="max-width: 600px; width: 100%;">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold">Request a Quote</h2>
+            <p class="text-muted">Get a detailed quote for <strong>{{ service.name }}</strong></p>
+        </div>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="mb-3">
+                    <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }} :</label> <br>
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="text-danger">
+                            {{ field.errors|join:" " }}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary w-100">Submit Request</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

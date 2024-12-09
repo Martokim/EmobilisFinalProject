@@ -1,0 +1,12 @@
+# Ignore virtual environment
+venv/
+
+# Ignore database file
+db.sqlite3
+
+# Ignore other unnecessary files
+__pycache__/
+*.pyc
+*.pyo
+.idea/
+media/

@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Lavender Nursery - Our Services{% endblock %}
+
+{% block content %}
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
+           <!-- <p class="fs-5 fw-bold text-primary">Our Services</p>-->
+            <h1 class="display-5 mb-5">Discover What We Offer</h1>
+        </div>
+        {% regroup services by get_category_display as category_list %}
+        {% for category in category_list %}
+            <div class="mb-5">
+                <h2 class="mb-4 wow fadeInUp" data-wow-delay="0.2s">{{ category.grouper }}</h2>
+                <div class="row g-4">
+                    {% for service in category.list %}
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                        <div class="service-item rounded d-flex h-100">
+                            <div class="service-img rounded">
+                                {% if service.image %}
+                                    <img class="img-fluid" src="{{ service.image.url }}" alt="{{ service.name }}">
+                                {% else %}
+                                    <img class="img-fluid" src="{% static 'img/default-service.jpg' %}" alt="{{ service.name }}">
+                                {% endif %}
+                            </div>
+                            <div class="service-text rounded p-5">
+                                <h4 class="mb-3">{{ service.name }}</h4>
+                                <p class="mb-4">{{ service.description|truncatewords:20 }}</p>
+                                {% comment %} <p class="mb-2"><strong>Price:</strong> ${{ service.price }}</p>
+                                <p class="mb-2"><strong>Duration:</strong> {{ service.duration }}</p>
+                                {% if service.location %}
+                                    <p class="mb-2"><strong>Location:</strong> {{ service.location }}</p>
+                                {% endif %} {% endcomment %}
+                                <a class="btn btn-sm" href="{% url 'service_detail' service.id %}">
+                                    <i class="fa fa-plus text-primary me-2"></i>Learn More
+                                </a>                                
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
