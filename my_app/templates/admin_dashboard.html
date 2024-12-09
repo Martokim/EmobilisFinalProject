@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Admin Dashboard</h1>
+
+<h2>Pending Quote Requests</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>User</th>
+            <th>Service</th>
+            <th>Date Requested</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for request in quote_requests %}
+        <tr>
+            <td>{{ request.user.username }}</td>
+            <td>{{ request.service.name }}</td>
+            <td>{{ request.created_at|date:"F d, Y" }}</td>
+            <td>
+                <a href="{% url 'respond_to_request' 'quote' request.id %}" class="btn btn-primary btn-sm">Respond</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4">No pending quote requests.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2 class="mt-5">Pending Plant Orders</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>User</th>
+            <th>Plant</th>
+            <th>Quantity</th>
+            <th>Date Requested</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for request in plant_requests %}
+        <tr>
+            <td>{{ request.user.username }}</td>
+            <td>{{ request.plant.name }}</td>
+            <td>{{ request.quantity }}</td>
+            <td>{{ request.request_date|date:"F d, Y" }}</td>
+            <td>
+                <a href="{% url 'respond_to_request' 'plant' request.id %}" class="btn btn-primary btn-sm">Respond</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">No pending plant requests.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Respond to {{ request_type|title }} Request/Orders</h1>
+    <hr>
+    <h3>Customer Details</h3>
+    <p><strong>Name:</strong> {{ req.user.first_name|default:'' }} {{ req.user.last_name|default:'' }}</p>
+    <p><strong>Email:</strong> {{ req.user.email|default:'' }}</p>
+    <p><strong>Phone:</strong> {{ req.phone|default:"N/A" }}</p>
+    <p><strong>Location:</strong> {{ req.location|default:"N/A" }}</p>
+    <p><strong>Additional Info:</strong> {{ req.additional_info|default:"N/A" }}</p>
+    
+    <!-- Form for Admin Response -->
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="status">Status</label>
+            <select name="status" id="status" class="form-control">
+                <option value="pending" {% if req.status == "pending" %}selected{% endif %}>Pending</option>
+                <option value="Inprogress" {% if req.status == "Inprogress" %}selected{% endif %}>Inprogress</option>
+                <option value="Completed" {% if req.status == "Completed" %}selected{% endif %}>Completed</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="response">Response</label>
+            <textarea name="response" id="response" rows="4" class="form-control">{{ req.response|default:"" }}</textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit Response</button>
+    </form>
+</div>
+{% endblock %}
