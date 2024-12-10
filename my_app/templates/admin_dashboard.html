@@ -1,64 +1,89 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Admin Dashboard</h1>
+<div class="container mt-5">
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+            <!-- Display Admin's Name -->
+            <h3 class="text-center text-primary">Welcome, {{ request.user.get_full_name|default:request.user.username }}!</h3>
+            <p class="text-center text-muted">Manage requests and oversee operations efficiently.</p>
+            <h2>Management</h2>
+            <a href="{% url 'manage_plants' %}" class="btn btn-primary">Manage Plants</a>
+            <a href="{% url 'manage_services' %}" class="btn btn-primary">Manage Services</a>
+            
+        </div>
+    </div>
 
-<h2>Pending Quote Requests</h2>
-<table class="table">
-    <thead>
-        <tr>
-            <th>User</th>
-            <th>Service</th>
-            <th>Date Requested</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for request in quote_requests %}
-        <tr>
-            <td>{{ request.user.username }}</td>
-            <td>{{ request.service.name }}</td>
-            <td>{{ request.created_at|date:"F d, Y" }}</td>
-            <td>
-                <a href="{% url 'respond_to_request' 'quote' request.id %}" class="btn btn-primary btn-sm">Respond</a>
-            </td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="4">No pending quote requests.</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+    <!-- Pending Quote Requests Section -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h4>Pending Quote Requests</h4>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Service</th>
+                        <th>Date Requested</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for request in quote_requests %}
+                    <tr>
+                        <td>{{ request.user.username }}</td>
+                        <td>{{ request.service.name }}</td>
+                        <td>{{ request.created_at|date:"F d, Y" }}</td>
+                        <td>
+                            <a href="{% url 'respond_to_request' 'quote' request.id %}" class="btn btn-primary btn-sm">Respond</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center text-muted">No pending quote requests.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-<h2 class="mt-5">Pending Plant Orders</h2>
-<table class="table">
-    <thead>
-        <tr>
-            <th>User</th>
-            <th>Plant</th>
-            <th>Quantity</th>
-            <th>Date Requested</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for request in plant_requests %}
-        <tr>
-            <td>{{ request.user.username }}</td>
-            <td>{{ request.plant.name }}</td>
-            <td>{{ request.quantity }}</td>
-            <td>{{ request.request_date|date:"F d, Y" }}</td>
-            <td>
-                <a href="{% url 'respond_to_request' 'plant' request.id %}" class="btn btn-primary btn-sm">Respond</a>
-            </td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="5">No pending plant requests.</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+    <!-- Pending Plant Orders Section -->
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h4>Pending Plant Orders</h4>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Plant</th>
+                        <th>Quantity</th>
+                        <th>Date Requested</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for request in plant_requests %}
+                    <tr>
+                        <td>{{ request.user.username }}</td>
+                        <td>{{ request.plant.name }}</td>
+                        <td>{{ request.quantity }}</td>
+                        <td>{{ request.request_date|date:"F d, Y" }}</td>
+                        <td>
+                            <a href="{% url 'respond_to_request' 'plant' request.id %}" class="btn btn-primary btn-sm">Respond</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center text-muted">No pending plant requests.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 {% endblock %}
-
