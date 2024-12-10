@@ -10,6 +10,8 @@ from .models import Plant, CartItem ,PlantRequest, Service, QuoteRequest, UserPr
 from .forms import UserRegisterForm, UserProfileForm, PlantRequestForm, QuoteRequestForm
 from django.db import models
 from django.utils.html import strip_tags
+from .forms import ServiceForm, PlantForm
+
 
 
 
@@ -23,20 +25,6 @@ def get_or_create_user_profile(user):
 # Create your views here.
 def home(request):
     return render(request, 'home.html')
-
-# def services(request):
-#     services = Service.objects.all().order_by('category', 'name')
-#     return render(request, 'services.html', {'services': services})
-
-#working progress
-# def projects(request):                       
-#     return render(request, 'projects.html') 
-
-# def contact(request):
-#     return render(request, 'contact.html')
-
-
-
 
 def register(request):
     if request.method == 'POST':
@@ -303,3 +291,77 @@ def update_cart(request, item_id):
         messages.success(request, f"{plant_name} removed from your cart.")
     return redirect('view_cart')
 
+#CRUD FUNCTIONALITY INCLUDED IN ADMIN-DASHBOARD
+@user_passes_test(lambda u: u.is_staff)
+def manage_plants(request):
+    plants = Plant.objects.all()
+    return render(request, 'manage_plants.html', {'plants': plants})
+
+@user_passes_test(lambda u: u.is_staff)
+def manage_services(request):
+    services = Service.objects.all()
+    return render(request, 'manage_services.html', {'services': services})
+
+@user_passes_test(lambda u: u.is_staff)
+def add_plant(request):
+    if request.method == 'POST':
+        form = PlantForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Plant added successfully!')
+            return redirect('manage_plants')
+    else:
+        form = PlantForm()
+    return render(request, 'add_edit_plant.html', {'form': form, 'action': 'Add'})
+
+@user_passes_test(lambda u: u.is_staff)
+def edit_plant(request, plant_id):
+    plant = get_object_or_404(Plant, id=plant_id)
+    if request.method == 'POST':
+        form = PlantForm(request.POST, request.FILES, instance=plant)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Plant updated successfully!')
+            return redirect('manage_plants')
+    else:
+        form = PlantForm(instance=plant)
+    return render(request, 'add_edit_plant.html', {'form': form, 'action': 'Edit'})
+
+@user_passes_test(lambda u: u.is_staff)
+def delete_plant(request, plant_id):
+    plant = get_object_or_404(Plant, id=plant_id)
+    plant.delete()
+    messages.success(request, 'Plant deleted successfully!')
+    return redirect('manage_plants')
+
+@user_passes_test(lambda u: u.is_staff)
+def add_service(request):
+    if request.method == 'POST':
+        form = ServiceForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Service added successfully!')
+            return redirect('manage_services')
+    else:
+        form = ServiceForm()
+    return render(request, 'add_edit_service.html', {'form': form, 'action': 'Add'})
+
+@user_passes_test(lambda u: u.is_staff)
+def edit_service(request, service_id):
+    service = get_object_or_404(Service, id=service_id)
+    if request.method == 'POST':
+        form = ServiceForm(request.POST, request.FILES, instance=service)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Service updated successfully!')
+            return redirect('manage_services')
+    else:
+        form = ServiceForm(instance=service)
+    return render(request, 'add_edit_service.html', {'form': form, 'action': 'Edit'})
+
+@user_passes_test(lambda u: u.is_staff)
+def delete_service(request, service_id):
+    service = get_object_or_404(Service, id=service_id)
+    service.delete()
+    messages.success(request, 'Service deleted successfully!')
+    return redirect('manage_services')
