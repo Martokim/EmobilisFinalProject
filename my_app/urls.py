@@ -27,7 +27,18 @@ urlpatterns = [
     path('services/', views.services, name='services'),
     path('services/<int:service_id>/', views.service_detail, name='service_detail'),
     path('request-quote/<int:service_id>/', views.request_quote, name='request_quote'),
+    
     path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
+    path('manage-plants/', views.manage_plants, name='manage_plants'),
+    path('add-plant/', views.add_plant, name='add_plant'),
+    path('edit-plant/<int:plant_id>/', views.edit_plant, name='edit_plant'),
+    path('delete-plant/<int:plant_id>/', views.delete_plant, name='delete_plant'),
+
+    path('manage-services/', views.manage_services, name='manage_services'),
+    path('add-service/', views.add_service, name='add_service'),
+    path('edit-service/<int:service_id>/', views.edit_service, name='edit_service'),
+    path('delete-service/<int:service_id>/', views.delete_service, name='delete_service'),
+
     path('respond-to-request/<str:request_type>/<int:request_id>/', views.respond_to_request, name='respond_to_request'),
 
     path('add-to-cart/<int:plant_id>/', views.add_to_cart, name='add_to_cart'),
