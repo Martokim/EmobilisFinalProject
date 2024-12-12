@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm , UserChangeForm, PasswordChangeForm
 from django.contrib.auth.models import User
 from .models import UserProfile, PlantRequest, QuoteRequest
+from .models import Plant, Service
 
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField()
@@ -50,3 +51,12 @@ class QuoteRequestForm(forms.ModelForm):
             'additional_info': forms.Textarea(attrs={'rows': 2}),
         }
 
+class PlantForm(forms.ModelForm):
+    class Meta:
+        model = Plant
+        fields = '__all__'
+
+class ServiceForm(forms.ModelForm):
+    class Meta:
+        model = Service
+        fields = '__all__'

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Manage Services</h1>
+<a href="{% url 'add_service' %}" class="btn btn-success mb-3">Add New Service</a>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for service in services %}
+        <tr>
+            <td>{{ service.name }}</td>
+            <td>{{ service.category }}</td>
+            <td>{{ service.price }}</td>
+            <td>
+                <a href="{% url 'edit_service' service.id %}" class="btn btn-primary btn-sm">Edit</a>
+                <a href="{% url 'delete_service' service.id %}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?');">Delete</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4" class="text-center text-muted">No services available.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
